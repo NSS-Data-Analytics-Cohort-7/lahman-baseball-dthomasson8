@@ -12,3 +12,5 @@ GROUP BY p.height, p.namefirst, p.namelast, p.playerid, a.teamid, a.g_all, a.pla
 ORDER BY p.height;
 ---2. Eddie Gaedel, who was 3'7" (43 inches tall). Eddie played in a total of one game for the St. Louis Browns (SLA).
 
+SELECT 
+p.namefirst, p.namelast, p.playerid, a.teamid, 
