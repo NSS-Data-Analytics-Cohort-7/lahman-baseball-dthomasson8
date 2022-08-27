@@ -38,6 +38,10 @@ WHERE schoolid LIKE 'vandy' AND ts.total_salary IS NOT NULL
 ORDER BY ts.total_salary DESC;
 ---3. David Price (priceda01) made a total salary of $81,851,296.00 in the majors.
 
+---COME BACK TO 4 AND JUST MOVE ON!
 SELECT * 
 FROM fielding
 CASE WHEN ;
+
+
+---USE CASE STATEMENT TO GET DECADES.TEAMS IS THE TABLE YOU WANT. USE YOUR BRAIN, YOU ARE NOT DUM DUM.
