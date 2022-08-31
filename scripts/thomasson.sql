@@ -108,4 +108,50 @@ FROM homegames;
 SELECT *
 FROM parks;
 
-SELECT Attendance, h.park, team, 
+SELECT Attendance, h.park, team, park_name, (attendance/games) as avg_attendance
+FROM homegames as h
+LEFT JOIN parks as p 
+ON h.park = p.park
+WHERE year = 2016
+GROUP BY team, h.park, attendance, games, park_name
+ORDER BY attendance desc
+LIMIT 5;
+---8. ANSWER (FOR TOP 5): 
+       --- "LAN"	"Dodger Stadium"
+       --- "SLN"	"Busch Stadium III"
+       --- "TOR"	"Rogers Centre"
+       --- "SFN"	"AT&T Park"
+       --- "CHN"	"Wrigley Field"
+       
+SELECT Attendance, h.park, team, park_name, (attendance/games) as avg_attendance
+FROM homegames as h
+LEFT JOIN parks as p 
+ON h.park = p.park
+WHERE year = 2016
+GROUP BY team, h.park, attendance, games, park_name
+ORDER BY attendance
+LIMIT 5;
+---8. ANSWER (FOR LOWEST 5): 
+       --- "ATL"	"Fort Bragg Field"
+       --- "TBA"	"Tropicana Field"
+       --- "OAK"	"Oakland-Alameda County Coliseum"
+       --- "CLE"	"Progressive Field"
+       --- "MIA"	"Marlins Park"
+       
+       
+---9. Which managers have won the TSN Manager of the Year award in both the National League (NL) and the American League (AL)? Give their full name and the teams that they were managing when they won the award.
+SELECT *
+FROM awardsmanagers;
+
+SELECT *
+FROM teams;
+
+SELECT distinct(am.playerid), namefirst, namelast, awardid, am.yearid, am.lgid as league, name
+FROM awardsmanagers as am
+LEFT JOIN people as p
+ON am.playerid = p.playerid
+LEFT JOIN teams as t
+ON am.yearid = t.yearid
+WHERE awardid = 'TSN Manager of the Year' AND am.lgid = 'AL'
+GROUP BY am.yearid, am.playerid, namefirst, namelast, awardid, am.lgid, name
+ORDER BY am.yearid desc;
