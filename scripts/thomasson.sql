@@ -146,17 +146,13 @@ FROM awardsmanagers;
 SELECT *
 FROM teams;
 
-with leagueAL as
-(SELECT distinct(am.playerid), awardid, am.lgid as league
-FROM awardsmanagers as am
-LEFT JOIN people as p
-ON am.playerid = p.playerid
-WHERE awardid = 'TSN Manager of the Year' AND am.lgid = 'AL'
-GROUP BY am.playerid, namefirst, namelast, awardid, am.lgid
-ORDER BY am.playerid desc)
+SELECT *
+FROM managers;
 
+
+---was able to combine into one CTE.
 with leagueNL as
-(SELECT distinct(am.playerid), awardid, am.lgid as league
+(SELECT distinct(am.playerid), awardid, am.lgid as leaguenl
 FROM awardsmanagers as am
 LEFT JOIN people as p
 ON am.playerid = p.playerid
@@ -164,4 +160,34 @@ WHERE awardid = 'TSN Manager of the Year' AND am.lgid = 'NL'
 GROUP BY am.playerid, namefirst, namelast, awardid, am.lgid
 ORDER BY am.playerid desc)
 
-Select distinct(am.playerid), namefirst, namelast,
+with leagueAL as
+(SELECT distinct(am.playerid), awardid, am.lgid as leagueal
+FROM awardsmanagers as am
+LEFT JOIN people as p
+ON am.playerid = p.playerid
+WHERE awardid = 'TSN Manager of the Year' AND am.lgid = 'AL'
+GROUP BY am.playerid, namefirst, namelast, awardid, am.lgid
+ORDER BY am.playerid desc);
+
+
+---using this to hopefully get my answer.
+with league_award as
+(SELECT distinct(am.playerid), awardid, am.yearid, am.lgid as league, name, namefirst, namelast
+FROM awardsmanagers as am
+INNER JOIN people as p
+ON am.playerid = p.playerid
+INNER JOIN teams as t
+ON am.yearid = t.yearid AND am.lgid = t.lgid
+INNER JOIN managers as m
+ON t.teamid = m.teamid AND am.playerid = m.playerid
+WHERE awardid = 'TSN Manager of the Year' AND am.lgid in ('AL','NL')
+GROUP BY am.playerid, am.yearid, namefirst, namelast, awardid, am.lgid, name
+ORDER BY am.playerid desc)
+
+SELECT *
+FROM league_award
+WHERE ;
+
+
+
+
