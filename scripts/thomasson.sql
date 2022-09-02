@@ -146,12 +146,22 @@ FROM awardsmanagers;
 SELECT *
 FROM teams;
 
-SELECT distinct(am.playerid), namefirst, namelast, awardid, am.yearid, am.lgid as league, name
+with leagueAL as
+(SELECT distinct(am.playerid), awardid, am.lgid as league
 FROM awardsmanagers as am
 LEFT JOIN people as p
 ON am.playerid = p.playerid
-LEFT JOIN teams as t
-ON am.yearid = t.yearid
 WHERE awardid = 'TSN Manager of the Year' AND am.lgid = 'AL'
-GROUP BY am.yearid, am.playerid, namefirst, namelast, awardid, am.lgid, name
-ORDER BY am.yearid desc;
+GROUP BY am.playerid, namefirst, namelast, awardid, am.lgid
+ORDER BY am.playerid desc)
+
+with leagueNL as
+(SELECT distinct(am.playerid), awardid, am.lgid as league
+FROM awardsmanagers as am
+LEFT JOIN people as p
+ON am.playerid = p.playerid
+WHERE awardid = 'TSN Manager of the Year' AND am.lgid = 'NL'
+GROUP BY am.playerid, namefirst, namelast, awardid, am.lgid
+ORDER BY am.playerid desc)
+
+Select distinct(am.playerid), namefirst, namelast,
